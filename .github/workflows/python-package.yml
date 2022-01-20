@@ -40,6 +40,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.package }}
-      run: |
-        pwd
-        ls -al
+        run: |
+          pwd
+          ls -al
