@@ -24,12 +24,12 @@ jobs:
       id: filter
       with:
         filters: |
-          package1:
-            - src/package1/Dockerfile
-          package2:
-            src/package2/Dockerfile
-          package3:
-            src/package3/Dockerfile
+          centos-7:
+            - centos-7/Dockerfile
+          centos-8:
+            centos-8/Dockerfile
+          fedora-30:
+            fedora-30/Dockerfile
   # JOB to build and test each of modified packages
   build:
     needs: changes
@@ -46,3 +46,4 @@ jobs:
           pwd
           ls -al
           env
+          ls -al ${{ matrix.package }}
