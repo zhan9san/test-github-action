@@ -25,9 +25,12 @@ jobs:
       id: filter
       with:
         filters: |
-          package1: src/package1
-          package2: src/package2
-
+          package1:
+            - src/package1/Dockerfile
+          package2:
+            src/package2/Dockerfile
+          package3:
+            src/package3/Dockerfile
   # JOB to build and test each of modified packages
   build:
     needs: changes
@@ -43,3 +46,4 @@ jobs:
         run: |
           pwd
           ls -al
+          env
