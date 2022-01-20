@@ -5,40 +5,45 @@ name: Python package
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
     branches: [ main ]
 
+
 jobs:
-  build:
-
+  # JOB to run change detection
+  changes:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.8", "3.9", "3.10"]
-
+    outputs:
+      # Expose matched filters as job 'packages' output variable
+      packages: ${{ steps.filter.outputs.changes }}
     steps:
-    - uses: actions/checkout@v2
+    # For pull requests it's not necessary to checkout the code
+    - uses: dorny/paths-filter@v2
+      id: filter
       with:
-        path: 'zhan9san.postgres_exporter'
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        pwd
-        ls -al
-        python -m pip install --upgrade pip
-        python -m pip install flake8 pytest
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Lint with flake8
-      run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Test with pytest
-      run: |
-        pytest
+        filters: |
+          centos-7:
+            - centos-7/Dockerfile
+          centos-8:
+            centos-8/Dockerfile
+          fedora-30:
+            fedora-30/Dockerfile
+  # JOB to build and test each of modified packages
+  build:
+    needs: changes
+    strategy:
+      matrix:
+        # Parse JSON array containing names of all filters matching any of changed files
+        # e.g. ['package1', 'package2'] if both package folders contains changes
+        package: ${{ fromJSON(needs.changes.outputs.packages) }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.package }}
+        run: |
+          pwd
+          ls -al
+          env
+          ls -al ${{ matrix.package }}
