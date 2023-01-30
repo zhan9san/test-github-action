@@ -3,6 +3,16 @@ entries:
   test-github-action:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2023-01-30T05:26:00.764085007Z"
+    description: A Helm chart for Kubernetes
+    digest: 9101eed5df250eed5ec3a2c38d22512ada9969abc0cdc7797fcb866f5513ca4c
+    name: test-github-action
+    type: application
+    urls:
+    - https://github.com/zhan9san/test-github-action/releases/download/test-github-action-0.1.3/test-github-action-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2023-01-30T05:17:50.7967872Z"
     description: A Helm chart for Kubernetes
     digest: 6cf3c0669c436864a36fe2016e4d5cc8da3f4d1480f32db7bce85a730e3b588b
@@ -21,4 +31,4 @@ entries:
     urls:
     - https://github.com/zhan9san/test-github-action/releases/download/test-github-action-0.1.1/test-github-action-0.1.1.tgz
     version: 0.1.1
-generated: "2023-01-30T05:17:50.796838303Z"
+generated: "2023-01-30T05:26:00.764094407Z"
